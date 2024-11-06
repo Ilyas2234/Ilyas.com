@@ -1,33 +1,63 @@
-document.getElementById('spinButton').addEventListener('click', function() {
-    const rewards = ['Diamond', 'Gold', 'Silver', 'Rare Item', 'Epic Item', 'Common Item'];
-    const randomReward = rewards[Math.floor(Math.random() * rewards.length)];
+const player = document.getElementById("player");
+const enemy = document.getElementById("enemy");
+const items = document.querySelectorAll(".item");
 
-    // Update the reward display before spin
-    document.getElementById('currentReward').innerText = 'Spinning...';
+// Player movement variables
+let playerPosition = { x: 10, y: 50 };
 
-    // Simulasi animasi putaran roda
-    const gachaWheel = document.querySelector('.gacha-wheel');
-    gachaWheel.style.transition = 'transform 2s ease-in-out';
-    gachaWheel.style.transform = 'rotate(720deg)';
-    
-    // Setelah animasi selesai, tampilkan hasil
-    setTimeout(function() {
-        document.querySelector('.reward').innerText = randomReward;
-        document.getElementById('result').style.display = 'block';
-        updateLeaderboard(randomReward); // Update leaderboard
-    }, 2000);
+// Handle keyboard input for player movement
+document.addEventListener("keydown", (event) => {
+    const step = 5;
+    switch (event.key) {
+        case "ArrowUp":
+            playerPosition.y = Math.max(0, playerPosition.y - step);
+            break;
+        case "ArrowDown":
+            playerPosition.y = Math.min(400 - 30, playerPosition.y + step);
+            break;
+        case "ArrowLeft":
+            playerPosition.x = Math.max(0, playerPosition.x - step);
+            break;
+        case "ArrowRight":
+            playerPosition.x = Math.min(600 - 30, playerPosition.x + step);
+            break;
+    }
+    player.style.top = `${playerPosition.y}px`;
+    player.style.left = `${playerPosition.x}px`;
+
+    checkItemCollision();
 });
 
-document.getElementById('claimButton').addEventListener('click', function() {
-    alert("You have claimed your reward!");
-    document.getElementById('result').style.display = 'none';
-});
+// Check collision between player and items
+function checkItemCollision() {
+    items.forEach((item) => {
+        const itemRect = item.getBoundingClientRect();
+        const playerRect = player.getBoundingClientRect();
 
-function updateLeaderboard(reward) {
-    const leaderboardList = document.getElementById('leaderboardList');
-    
-    // Mock leaderboard update (this could be dynamic with server data)
-    const newPlayer = document.createElement('li');
-    newPlayer.textContent = `Player ${Math.floor(Math.random() * 1000)}: ${reward}`;
-    leaderboardList.insertBefore(newPlayer, leaderboardList.firstChild);
+        if (
+            playerRect.left < itemRect.left + itemRect.width &&
+            playerRect.left + playerRect.width > itemRect.left &&
+            playerRect.top < itemRect.top + itemRect.height &&
+            playerRect.height + playerRect.top > itemRect.top
+        ) {
+            item.style.display = "none"; // Hide the item
+            alert("Item Collected!");
+        }
+    });
 }
+
+// Enemy movement (simple AI)
+setInterval(() => {
+    const enemySpeed = 2;
+    const dx = playerPosition.x - parseInt(enemy.style.left || 0);
+    const dy = playerPosition.y - parseInt(enemy.style.top || 0);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Move enemy towards the player
+    if (distance > 0) {
+        const moveX = (dx / distance) * enemySpeed;
+        const moveY = (dy / distance) * enemySpeed;
+        enemy.style.left = `${parseInt(enemy.style.left || 0) + moveX}px`;
+        enemy.style.top = `${parseInt(enemy.style.top || 0) + moveY}px`;
+    }
+}, 50);
