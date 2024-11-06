@@ -3,47 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gacha World - Spin & Win</title>
+    <title>Mini MOBA Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Welcome to Gacha World!</h1>
-            <p>Spin the wheel and collect amazing rewards!</p>
+            <h1>Mini MOBA Arena</h1>
+            <p>Control your character, collect items, and defeat enemies!</p>
         </header>
-
-        <div class="content">
-            <section class="gacha-container">
-                <div class="gacha-item">
-                    <div class="gacha-wheel">
-                        <img src="wheel.png" alt="Gacha Wheel">
-                    </div>
-                    <button id="spinButton">Spin Gacha!</button>
-                </div>
-                <div class="reward-display">
-                    <h2>Current Reward:</h2>
-                    <div id="currentReward" class="reward">None</div>
-                </div>
-            </section>
-
-            <section class="leaderboard">
-                <h2>Leaderboard</h2>
-                <ul id="leaderboardList">
-                    <!-- Leaderboard content dynamically generated -->
-                </ul>
-            </section>
-        </div>
-
-        <section id="result" class="result-container">
-            <h2>Your Reward:</h2>
-            <div class="reward"></div>
-            <button id="claimButton" class="claim-button">Claim Reward</button>
-        </section>
         
-        <footer>
-            <p>&copy; 2024 Gacha Game. All rights reserved.</p>
-        </footer>
+        <!-- Arena Game -->
+        <div id="gameArea">
+            <div id="player" class="character"></div>
+            <div id="enemy" class="character enemy"></div>
+            <div class="item" style="top: 50px; left: 200px;"></div>
+            <div class="item" style="top: 300px; left: 100px;"></div>
+            <div class="item" style="top: 150px; left: 400px;"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
